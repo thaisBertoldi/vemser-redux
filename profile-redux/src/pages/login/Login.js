@@ -1,44 +1,66 @@
-import React from 'react'
-import { useFormik } from 'formik'
-import { connect } from 'react-redux'
-import {handleLogin} from '../../store/actions/AuthActions'
+import React from "react";
+import { useFormik } from "formik";
+import { connect } from "react-redux";
+import { handleLogin } from "../../store/actions/AuthActions";
+import { useNavigate } from "react-router-dom";
+import { ContainerForm, ContainerLogin, DivForm, LoginForm } from "./Login.styles";
+import { Button } from "../../allPages.styles";
 
-function Login({auth, dispatch}) {
+function Login({ auth, dispatch }) {
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
-      usuario: '',
-      senha: '',
+      usuario: "",
+      senha: "",
     },
-    onSubmit: values => {
-      handleLogin(values, dispatch);
+    onSubmit: (values) => {
+      handleLogin(values, dispatch, navigate);
     },
   });
   return (
-    <form onSubmit={formik.handleSubmit}>
-      <label htmlFor="usuario">Usuario</label>
-      <input
-        id="usuario"
-        name="usuario"
-        type="text"
-        onChange={formik.handleChange}
-        value={formik.values.usuario}
-      />
-      <label htmlFor="senha">Senha</label>
-      <input
-        id="senha"
-        name="senha"
-        type="password"
-        onChange={formik.handleChange}
-        value={formik.values.senha}
-      />
-      
-      <button type="submit">Submit</button>
-    </form>
+    <ContainerLogin>
+      <ContainerForm>
+        <form onSubmit={formik.handleSubmit}>
+          <DivForm>
+            <label htmlFor="usuario">Usuario</label>
+            <LoginForm
+              id="usuario"
+              name="usuario"
+              type="text"
+              onChange={formik.handleChange}
+              value={formik.values.usuario}
+            />
+          </DivForm>
+
+          <DivForm>
+            <label htmlFor="senha">Senha</label>
+            <LoginForm
+              id="senha"
+              name="senha"
+              type="password"
+              onChange={formik.handleChange}
+              value={formik.values.senha}
+            />
+          </DivForm>
+
+          <div>
+            <Button
+              color={"white"}
+              background={"blue"}
+              border={"blue"}
+              type="submit"
+            >
+              Submit
+            </Button>
+          </div>
+        </form>
+      </ContainerForm>
+    </ContainerLogin>
   );
-};
+}
 
-const mapStateToProps = state => ({
-    auth: state.authReducer.auth
-})
+const mapStateToProps = (state) => ({
+  auth: state.authReducer.auth,
+});
 
-export default connect(mapStateToProps)(Login)
+export default connect(mapStateToProps)(Login);
